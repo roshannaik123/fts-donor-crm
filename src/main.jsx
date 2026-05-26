@@ -7,21 +7,21 @@ import App from "./App.jsx";
 import "./index.css";
 import { ThemeProvider } from "./lib/theme-context.jsx";
 
-const queryClient = new QueryClient(); 
+const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter
       future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
-      // basename="/admin"
+      basename="/donor-login"
     >
       <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
-        <AppProvider>
-          <App />
-        </AppProvider>
+        <ThemeProvider>
+          <AppProvider>
+            <App />
+          </AppProvider>
         </ThemeProvider>
       </QueryClientProvider>
     </BrowserRouter>
-  </StrictMode>
+  </StrictMode>,
 );

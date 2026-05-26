@@ -1,24 +1,24 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Loader2, ArrowLeft, CheckCircle } from 'lucide-react';
-import axios from 'axios';
-import BASE_URL from '@/config/base-url';
-import { toast } from 'sonner';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from "react";
+import { Loader2, ArrowLeft, CheckCircle } from "lucide-react";
+import axios from "axios";
+import BASE_URL from "@/config/base-url";
+import { toast } from "sonner";
+import { Link, useNavigate } from "react-router-dom";
 
 const ForgotPassword = () => {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [loadingMessage, setLoadingMessage] = useState('');
+  const [loadingMessage, setLoadingMessage] = useState("");
   const usernameInputRef = useRef(null);
   const navigate = useNavigate();
 
   const loadingMessages = [
-    'Processing your request...',
-    'Sending password to your email...',
-    'Verifying your details...',
-    'Almost done...',
+    "Processing your request...",
+    "Sending password to your email...",
+    "Verifying your details...",
+    "Almost done...",
   ];
 
   useEffect(() => {
@@ -47,7 +47,7 @@ const ForgotPassword = () => {
 
   // Handle Enter key press
   const handleKeyPress = (event) => {
-    if (event.key === 'Enter' && !isLoading) {
+    if (event.key === "Enter" && !isLoading) {
       handleSubmit(event);
     }
   };
@@ -57,44 +57,57 @@ const ForgotPassword = () => {
 
     // Validate inputs
     if (!username.trim() || !email.trim()) {
-      toast.error('Please enter both username and email.');
+      toast.error("Please enter both username and email.");
       return;
     }
 
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      toast.error('Please enter a valid email address.');
+      toast.error("Please enter a valid email address.");
       return;
     }
 
     setIsLoading(true);
 
     const formData = new FormData();
-    formData.append('username', username);
-    formData.append('email', email);
+    formData.append("username", username);
+    formData.append("email", email);
 
     try {
-      const res = await axios.post(`${BASE_URL}/api/panel-send-donor-password?username=${username}&email=${email}`, formData);
+      const res = await axios.post(
+        `${BASE_URL}/api/panel-send-donor-password?username=${username}&email=${email}`,
+        formData,
+      );
 
       if (res.data.code === 200) {
         setIsSuccess(true);
-        toast.success(res.data.message || 'Password sent successfully to your email!');
-        
+        toast.success(
+          res.data.message || "Password sent successfully to your email!",
+        );
+
         // Clear form after successful submission
-        setUsername('');
-        setEmail('');
-        
+        setUsername("");
+        setEmail("");
+
         // Reset success state after 5 seconds
         setTimeout(() => {
           setIsSuccess(false);
         }, 5000);
       } else {
-        toast.error(res.data.message || 'Failed to send password. Please try again.');
+        toast.error(
+          res.data.message || "Failed to send password. Please try again.",
+        );
       }
     } catch (error) {
-      console.error('❌ Forgot Password Error:', error.response?.data?.message || error.message);
-      toast.error(error.response?.data?.message || 'Something went wrong. Please try again.');
+      console.error(
+        "❌ Forgot Password Error:",
+        error.response?.data?.message || error.message,
+      );
+      toast.error(
+        error.response?.data?.message ||
+          "Something went wrong. Please try again.",
+      );
     } finally {
       setIsLoading(false);
     }
@@ -115,7 +128,7 @@ const ForgotPassword = () => {
           <div className="max-w-md w-full">
             {/* Back to Login */}
             <button
-              onClick={() => navigate('/')}
+              onClick={() => navigate("/")}
               disabled={isLoading}
               className="flex items-center gap-2 text-gray-600 hover:text-gray-800 mb-6 text-base disabled:opacity-50 disabled:cursor-not-allowed"
             >
@@ -127,17 +140,21 @@ const ForgotPassword = () => {
             <h1 className="text-4xl md:text-5xl font-bold text-blue-900 leading-tight mb-6 canela-font">
               Reset Your Password
             </h1>
-            
+
             {/* Description */}
             <p className="text-gray-700 text-base mb-4 leading-relaxed">
-              Enter your Donor ID and registered email address to receive your password. We'll send it to the email associated with your account.
+              Enter your Donor ID and registered email address to receive your
+              password. We'll send it to the email associated with your account.
             </p>
-            
+
             <p className="text-gray-700 text-base mb-8">
-              If you don't remember your Donor ID, please{' '}
-              <Link to="#" className="text-orange-500 underline hover:text-orange-600">
+              If you don't remember your Donor ID, please{" "}
+              <Link
+                to="#"
+                className="text-orange-500 underline hover:text-orange-600"
+              >
                 contact support
-              </Link>{' '}
+              </Link>{" "}
               for assistance.
             </p>
 
@@ -149,9 +166,12 @@ const ForgotPassword = () => {
                 <div className="flex items-center gap-3">
                   <CheckCircle className="w-5 h-5 text-green-600" />
                   <div>
-                    <p className="text-green-800 font-medium text-base">Password Sent Successfully!</p>
+                    <p className="text-green-800 font-medium text-base">
+                      Password Sent Successfully!
+                    </p>
                     <p className="text-green-700 text-sm mt-1">
-                      Check your email for your password. You can now login with the received password.
+                      Check your email for your password. You can now login with
+                      the received password.
                     </p>
                   </div>
                 </div>
@@ -161,7 +181,10 @@ const ForgotPassword = () => {
             {/* Forgot Password Form */}
             <form onSubmit={handleSubmit}>
               <div className="mb-6">
-                <label htmlFor="username" className="block text-blue-900 font-semibold mb-2 text-base">
+                <label
+                  htmlFor="username"
+                  className="block text-blue-900 font-semibold mb-2 text-base"
+                >
                   Donor ID (Username)
                 </label>
                 <input
@@ -178,7 +201,10 @@ const ForgotPassword = () => {
               </div>
 
               <div className="mb-6">
-                <label htmlFor="email" className="block text-blue-900 font-semibold mb-2 text-base">
+                <label
+                  htmlFor="email"
+                  className="block text-blue-900 font-semibold mb-2 text-base"
+                >
                   Registered Email Address
                 </label>
                 <input
@@ -192,7 +218,8 @@ const ForgotPassword = () => {
                   className="w-full px-4 py-3 border border-gray-300 rounded bg-white text-gray-700 placeholder-gray-400 focus:outline-none focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
                 />
                 <p className="text-gray-600 text-sm mt-2">
-                  Enter the email address associated with your Ekal donor account
+                  Enter the email address associated with your Ekal donor
+                  account
                 </p>
               </div>
 
@@ -208,15 +235,11 @@ const ForgotPassword = () => {
                       <span className="text-xs">{loadingMessage}</span>
                     </>
                   ) : (
-                    'Send Password to Email'
+                    "Send Password to Email"
                   )}
                 </button>
               </div>
             </form>
-
-        
-
-            
           </div>
         </div>
 
@@ -227,7 +250,6 @@ const ForgotPassword = () => {
             alt="Children learning"
             className="absolute inset-0 w-full h-full object-cover"
           />
-    
         </div>
       </div>
     </>

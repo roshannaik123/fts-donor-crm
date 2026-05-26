@@ -1,7 +1,5 @@
 import { useNavigate } from "react-router-dom";
 
-
-
 import Cookies from "js-cookie";
 import { Toaster } from "sonner";
 import ScrollToTop from "./components/common/scroll-to-top";
