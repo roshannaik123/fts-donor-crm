@@ -48,6 +48,8 @@ export const ReceiptViewDialog = ({ id }) => {
     enabled: false,
     refetchOnWindowFocus: false,
   });
+  const signature = `${receiptData?.image_url?.image_url}${receiptData?.auth_sign?.[0]?.indicomp_image_sign}`;
+  const imgepdf = `${receiptData?.image_url?.image_url}${receiptData?.auth_sign?.[0]?.indicomp_image_sign}`;
 
   const handleOpenChange = (isOpen) => {
     setOpen(isOpen);
@@ -62,7 +64,7 @@ export const ReceiptViewDialog = ({ id }) => {
   const country = receiptData?.country || [];
   const amountInWords = numWords(receipts.receipt_total_amount || 0);
 
-  const handleSavePDF = () => {
+  const handleSavePDF = async () => {
     const input = tableRef.current;
     if (!input) return;
 
@@ -83,6 +85,16 @@ export const ReceiptViewDialog = ({ id }) => {
     clone.style.left = "-9999px";
     clone.style.top = "0";
     clone.style.visibility = "visible";
+    const pdfSignature = clone.querySelector('img[alt="Authorized Signature"]');
+
+    if (pdfSignature) {
+      pdfSignature.src = imgepdf;
+
+      await new Promise((resolve) => {
+        pdfSignature.onload = resolve;
+        pdfSignature.onerror = resolve;
+      });
+    }
     document.body.appendChild(clone);
 
     html2canvas(clone, {
@@ -113,8 +125,18 @@ export const ReceiptViewDialog = ({ id }) => {
         const imgWidth = pdfWidth - 2 * margin;
         const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
+        const fileName = `Receipt_${receipts.receipt_ref_no}.pdf`;
         pdf.addImage(imgData, "PNG", margin, margin, imgWidth, imgHeight);
-        pdf.save(`Receipt_${receipts.receipt_ref_no}.pdf`);
+        pdf.save(fileName);
+        const followUpFormData = new FormData();
+        followUpFormData.append("chapter_id", receipts.chapter_id);
+        followUpFormData.append("indicomp_fts_id", receipts.indicomp_fts_id);
+        followUpFormData.append("followup_heading", "PDF Downloaded");
+        followUpFormData.append(
+          "followup_description",
+          `Receipt PDF was downloaded by ${Cookies.get("name")}`,
+        );
+        followUpFormData.append("followup_status", "Completed");
       })
       .catch((error) => {
         console.error("Error generating PDF: ", error);
@@ -585,6 +607,16 @@ export const ReceiptViewDialog = ({ id }) => {
                                     <br />
                                     <br />
                                     <br />
+                                    {receiptData?.auth_sign?.[0]
+                                      ?.indicomp_image_sign && (
+                                      <div className="flex justify-end">
+                                        <img
+                                          src={signature}
+                                          alt="Authorized Signature"
+                                          className="absolute right-12 bottom-7 h-16"
+                                        />
+                                      </div>
+                                    )}
                                     {authsign.length > 0 && (
                                       <div className="signature-section">
                                         <div className="flex flex-col items-end">
