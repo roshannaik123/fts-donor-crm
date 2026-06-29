@@ -111,8 +111,12 @@ const DonorDashboard = () => {
           <div className="mb-8 flex flex-col lg:flex-row items-center justify-between">
             <div>
               <h1 className="text-4xl font-bold text-gray-900 mb-2">
-                Welcome, {individualCompany.title}{" "}
-                {individualCompany.indicomp_full_name}
+                Welcome,{" "}
+                {individualCompany.indicomp_type === "Individual"
+                  ? individualCompany.title
+                    ? `${individualCompany.title} ${individualCompany.indicomp_full_name}`
+                    : individualCompany.indicomp_full_name
+                  : `M/s ${individualCompany.indicomp_full_name}`}
               </h1>
               <div className="text-gray-600 flex flex-row items-center gap-2 text-lg">
                 <div className="px-6 py-2 rounded-full bg-gray-900 text-white text-sm font-medium">
