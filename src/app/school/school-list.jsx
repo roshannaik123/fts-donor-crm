@@ -47,7 +47,6 @@ const SchoolList = () => {
   // Available columns with their display names
   const columns = [
     { key: "indicomp_full_name", label: "Company Name", visible: true },
-    // { key: 'schoolalot_financial_year', label: 'Financial Year', visible: true },
     { key: "schoolalot_year", label: "Allotment Year", visible: true },
     { key: "receipt_no_of_ots", label: "No. of OTS", visible: true },
     { key: "no_of_schools_allotted", label: "Schools Allotted", visible: true },
@@ -186,9 +185,7 @@ const SchoolList = () => {
           <div className="mb-8">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
               <div>
-                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
-                  Schools Allotment Management
-                </h1>
+                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2"></h1>
                 <p className="text-gray-600">
                   Total {pagination.total || 0} allotments • Page{" "}
                   {pagination.current_page || 1} of {pagination.last_page || 1}
@@ -354,7 +351,8 @@ const SchoolList = () => {
                                   <SchoolIcon className="w-3 h-3 mr-1" />
                                   {school[column.key]} Schools
                                 </span>
-                              ) : column.key === "schoolalot_financial_year" ||
+                              ) : column.key === "rept_fin_year" ||
+                                column.key === "schoolalot_financial_year" ||
                                 column.key === "schoolalot_year" ? (
                                 <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
                                   <Calendar className="w-3 h-3 mr-1" />
